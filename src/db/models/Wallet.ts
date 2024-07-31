@@ -1,4 +1,4 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
   timestamps: false,
@@ -22,4 +22,10 @@ export class Wallet extends Model {
     allowNull: false,
   })
   balance!: number;
+
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  currency_id!: number;
 }

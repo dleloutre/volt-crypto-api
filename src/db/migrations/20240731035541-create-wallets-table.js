@@ -24,7 +24,15 @@ module.exports = {
         onUpdate: 'cascade',
         onDelete: 'cascade'
       },
-      currency: Sequelize.ENUM(["BTC","USD"]),
+      currency_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'currencies',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      },
       balance: Sequelize.DataTypes.FLOAT
     });
   },

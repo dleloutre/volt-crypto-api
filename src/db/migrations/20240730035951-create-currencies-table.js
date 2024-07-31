@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('currencies', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -15,15 +15,15 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE
       },
-      email: {
-        type: Sequelize.DataTypes.STRING,
-        unique: true,
-        allowNull: false
+      name: {
+        type: Sequelize.ENUM(["btc","usd"]),
+        allowNull: false,
+        unique: true
       }
     });
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('currencies');
   }
 };

@@ -8,12 +8,12 @@ export type TransactionArgs = {
   price: number;
   type: TransactionType;
   currencyId: number;
-}
+};
 
 export class Transaction extends Entity {
   public userId: number;
   public amount: number;
-  public price : number;
+  public price: number;
   public type: TransactionType;
   public currencyId: number;
 

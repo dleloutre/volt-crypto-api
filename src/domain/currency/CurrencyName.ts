@@ -7,9 +7,7 @@ export function getCurrencyValues(): CurrencyName[] {
   return Object.values(CurrencyName);
 }
 
-export function getCurrencyIn(
-  param: string | undefined,
-): CurrencyName[] {
+export function getCurrencyIn(param: string | undefined): CurrencyName[] {
   if (!param) return getCurrencyValues();
   return param.split(',') as CurrencyName[];
 }

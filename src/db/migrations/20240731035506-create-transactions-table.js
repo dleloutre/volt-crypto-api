@@ -24,9 +24,27 @@ module.exports = {
         onUpdate: 'cascade',
         onDelete: 'cascade'
       },
-      amount: Sequelize.DataTypes.FLOAT,
-      price: Sequelize.DataTypes.FLOAT,
-      type: Sequelize.DataTypes.ENUM(["BUY","SELL"])
+      amount: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      price: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      type: {
+        type: Sequelize.ENUM(["buy","sell"]),
+        allowNull: false
+      },
+      currency_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'currencies',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      },
     });
   },
 

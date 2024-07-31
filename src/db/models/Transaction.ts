@@ -1,9 +1,5 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript';
-
-enum TransactionType {
-  BUY = 'BUY',
-  SELL = 'SELL',
-}
+import { TransactionType } from '@domain/transaction/TransactionType';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
   timestamps: false,
@@ -21,6 +17,12 @@ export class Transaction extends Model {
     allowNull: false,
   })
   user_id!: number;
+
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  currency_id!: number;
 
   @Column({
     type: DataType.ENUM(...Object.values(TransactionType)),

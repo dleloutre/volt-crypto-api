@@ -4,27 +4,23 @@ const { Op } = require('sequelize');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('wallets', [
+    return queryInterface.bulkInsert('currencies', [
       {
         id: 1,
-        user_id: 1,
+        name: "btc",
         createdAt: new Date(),
-        updatedAt: new Date(),
-        currency_id: 2,
-        balance: 50000
+        updatedAt: new Date()
       },{
         id: 2,
-        user_id: 1,
+        name: "usd",
         createdAt: new Date(),
-        updatedAt: new Date(),
-        currency_id: 1,
-        balance: 0
+        updatedAt: new Date()
       }
     ]);
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('wallets', {
+    return queryInterface.bulkDelete('currencies', {
       id: {[Op.in]: [1, 2]}
     }, {});
   }

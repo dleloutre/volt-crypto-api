@@ -5,7 +5,7 @@ export type WalletArgs = {
   userId: number;
   currencyId: number;
   balance: number;
-}
+};
 
 export class Wallet extends Entity {
   public userId: number;
