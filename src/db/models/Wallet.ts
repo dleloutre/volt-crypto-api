@@ -4,7 +4,6 @@ import { Table, Model, Column, DataType } from 'sequelize-typescript';
   timestamps: false,
   tableName: 'wallets',
 })
-
 export class Wallet extends Model {
   @Column({
     type: DataType.UUID,

@@ -1,7 +1,7 @@
 import {
   InternalErrorException,
   NotFoundException,
-  BadRequestException
+  BadRequestException,
 } from '../../exceptions/';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -19,7 +19,8 @@ export function handleError(
   let code: number;
   let description: string;
 
-  if (error instanceof BadRequestException) { //SyntaxError
+  if (error instanceof BadRequestException) {
+    //SyntaxError
     code = StatusCodes.BAD_REQUEST;
     description = 'Invalid body format';
   } else if (error instanceof NotFoundException) {

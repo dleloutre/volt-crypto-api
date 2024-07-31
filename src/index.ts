@@ -13,7 +13,6 @@ import { Sequelize } from 'sequelize/types';
 import connection from './db/SequelizeClient';
 import { handleError } from '@application/middlewares';
 
-
 const app = express();
 
 app.use(pino());

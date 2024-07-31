@@ -1,15 +1,14 @@
 import { Table, Model, Column, DataType } from 'sequelize-typescript';
 
 enum TransactionType {
-  BUY = "BUY",
-  SELL = "SELL"
+  BUY = 'BUY',
+  SELL = 'SELL',
 }
 
 @Table({
   timestamps: false,
   tableName: 'transactions',
 })
-
 export class Transaction extends Model {
   @Column({
     type: DataType.UUID,
