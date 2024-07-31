@@ -1,0 +1,35 @@
+services:
+  app:
+    container_name: volt-crypto-app
+    build: .
+    command: [sh, -c, "npm run migrate:up && npm run seed:all && npm start"]
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    networks:
+      - volt-crypto-network
+    depends_on:
+      - db
+    restart: on-failure
+  db:
+    container_name: volt-crypto-db
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=vcrypto
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    networks:
+      - volt-crypto-network
+    restart: on-failure
+
+networks:
+  volt-crypto-network:
+
+volumes:
+  db-volume:
