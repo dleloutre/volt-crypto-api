@@ -1,11 +1,12 @@
-import {
-  InternalErrorException,
-  NotFoundException,
-  BadRequestException,
-} from '../../exceptions/';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import pinoLogger from 'pino';
+
+import {
+  BadRequestException,
+  InternalErrorException,
+  NotFoundException,
+} from '../../exceptions/';
 
 const logger = pinoLogger();
 

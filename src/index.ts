@@ -3,19 +3,19 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import cors from 'cors';
 import express from 'express';
-import pino from 'express-pino-logger';
-import pinoLogger from 'pino';
+//import logger from 'pino-http';
 import http from 'http';
+import pinoLogger from 'pino';
+import { Sequelize } from 'sequelize/types';
 
 import { registerRouters } from '@application/controllers';
-import { config } from '@config';
-import { Sequelize } from 'sequelize/types';
-import connection from './db/SequelizeClient';
 import { handleError } from '@application/middlewares';
+import { config } from '@config';
+import connection from './db/SequelizeClient';
 
 const app = express();
 
-app.use(pino());
+//app.use(logger());
 app.use(cors());
 app.use(express.json());
 registerRouters(app);
