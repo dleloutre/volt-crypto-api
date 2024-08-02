@@ -16,25 +16,32 @@ Follow these steps to get the API up and running:
 1. **Clone the Repository:**
    ```bash
    git clone git@github.com:dleloutre/volt-crypto-api.git
+   cd volt-crypto-api
    ```
-2. **Build and Run with Docker Compose:**
+   
+2. **Copy the environment configuration file:**
+   ```bash
+   cp .env.example .env
+   ```
+   
+3. **Build and Run with Docker Compose:**
     ```bash
     docker compose up -d --build
     ```
 
-3. **Run Migrations:**
+4. **Run Migrations:**
     ```bash
     docker exec -it volt-crypto-app npm run migrate:up
     ```
    
-4. **Seed the Database:**
+5. **Seed the Database:**
     ```bash
     docker exec -it volt-crypto-app npm run seed:all
     ```
 
     This will initialize your wallets with $50,000 USD and 0 BTC.
 
-5. **Run Tests:**
+6. **Run Tests:**
     ```bash
     docker exec -it volt-crypto-app npm run test
     ```
