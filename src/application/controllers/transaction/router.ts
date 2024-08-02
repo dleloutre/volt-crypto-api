@@ -2,13 +2,12 @@ import { TransactionRequestDTO } from '@application/DTOs/TransactionRequestDTO';
 import { validateRequest } from '@application/middlewares/requestValidator';
 import { Router } from 'express';
 import { Container } from 'typedi';
-
 import { TransactionController } from './TransactionController';
 
 export function TransactionRouter() {
   const router = Router();
   const transactionController = Container.get(TransactionController);
-
+  console.log("TransactionController", transactionController);
   router.post(
     '/buy',
     validateRequest(TransactionRequestDTO),

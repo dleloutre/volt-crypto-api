@@ -1,4 +1,4 @@
-import { CurrencyService } from '@application/services';
+import { CurrencyService } from '@application/services/CurrencyService';
 import { TRANSACTION_BUY } from '@domain/transaction';
 import { Wallet } from '@domain/wallet';
 import { WalletRepository } from '@repositories';
@@ -10,7 +10,9 @@ export class WalletService {
   constructor(
     public walletRepository: WalletRepository,
     public currencyService: CurrencyService,
-  ) {}
+  ) {
+    console.log("Me invocan")
+  }
 
   public async getWalletByCurrencyName(
     currencyName: string,

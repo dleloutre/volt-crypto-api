@@ -2,9 +2,9 @@ import {
   TransactionRequestDTO,
   TransactionResponseDTO,
 } from '@application/DTOs';
-import { CoindeskService } from '@application/services';
-import { CurrencyService } from '@application/services';
-import { WalletService } from '@application/services';
+import { CoindeskService } from '@application/services/CoinDesk/CoindeskService';
+import { CurrencyService } from '@application/services/CurrencyService';
+import { WalletService } from '@application/services/WalletService';
 import connection from '@db/SequelizeClient';
 import { CURRENCY_CRYPTO, CURRENCY_USD } from '@domain/currency';
 import {
@@ -17,7 +17,7 @@ import {
   InternalErrorException,
   NotFoundException,
 } from '@shared';
-import { TransactionRepository } from 'repositories';
+import { TransactionRepository } from '@repositories';
 import { Service } from 'typedi';
 
 @Service()
@@ -27,7 +27,12 @@ export class TransactionService {
     public coindeskService: CoindeskService,
     public walletService: WalletService,
     public currencyService: CurrencyService,
-  ) {}
+  ) {
+    console.log(this.transactionRepository)
+    console.log(this.coindeskService)
+    console.log(this.walletService)
+    console.log(this.currencyService)
+  }
 
   public async buy(transactionDTO: TransactionRequestDTO) {
     return await this.performTransaction(transactionDTO, TRANSACTION_BUY);

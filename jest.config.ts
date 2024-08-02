@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleDirectories: ['node_modules', 'src'],
   testPathIgnorePatterns: ['/dist/', '/target/'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '@config': '<rootDir>/src/config/$1',
     '@domain/currency': '<rootDir>/src/domain/currency/$1',

@@ -3,8 +3,7 @@ import { Currency, Transaction, Wallet } from '@db/models';
 import { Sequelize } from 'sequelize-typescript';
 
 const connection = new Sequelize({
-  dialect: process.env.NODE_ENV === 'test' ? 'sqlite' : 'postgres',
-  storage: process.env.NODE_ENV === 'test' ? ':memory:' : undefined,
+  dialect: 'postgres',
   host: config.dbHost,
   username: config.dbUser,
   password: config.dbPassword,

@@ -6,7 +6,7 @@
     "dev": "nodemon -e ts --exec \"node --inspect=0.0.0.0:9229 -r tsconfig-paths/register -r ts-node/register src/index.ts\"",
     "start": "tsc && TS_NODE_BASEURL=./target node -r tsconfig-paths/register target",
     "build": "tsc",
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "lint": "eslint . --ext .ts --fix",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prepare": "husky install",

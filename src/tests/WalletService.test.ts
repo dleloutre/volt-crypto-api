@@ -1,6 +1,6 @@
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
-import { CurrencyService, WalletService } from '@application/services';
+import { CurrencyService, TransactionService, WalletService } from '@application/services';
 import { config } from '@config';
 import { Currency } from '@domain/currency';
 import { TRANSACTION_BUY } from '@domain/transaction';
@@ -38,10 +38,13 @@ describe('Wallet Service', () => {
       new CurrencyRepository() as jest.Mocked<CurrencyRepository>,
     ) as jest.Mocked<CurrencyService>;
 
-    Container.set(WalletRepository, mockedWalletRepository);
-    Container.set(CurrencyService, mockedCurrencyService);
+    Container.set('WalletRepositoryW', mockedWalletRepository);
+    Container.set('CurrencyServiceW', mockedCurrencyService);
 
-    walletService = Container.get(WalletService);
+    walletService = new WalletService(
+      Container.get('WalletRepositoryW'),
+      Container.get('CurrencyServiceW')
+    );
   });
 
   it('returns wallet when valid currency', async () => {
