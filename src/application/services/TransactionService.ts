@@ -7,7 +7,11 @@ import { CurrencyService } from '@application/services';
 import { WalletService } from '@application/services';
 import connection from '@db/SequelizeClient';
 import { CURRENCY_CRYPTO, CURRENCY_USD } from '@domain/currency';
-import { Transaction, TRANSACTION_BUY, TRANSACTION_SELL } from '@domain/transaction';
+import {
+  Transaction,
+  TRANSACTION_BUY,
+  TRANSACTION_SELL,
+} from '@domain/transaction';
 import {
   BadRequestException,
   InternalErrorException,
@@ -41,10 +45,10 @@ export class TransactionService {
       return await connection.transaction(async (dbTransaction) => {
         const cryptoPrice = await this.coindeskService.getBitcoinPrice();
         const usdWallet = await this.walletService.getWalletByCurrencyName(
-          CURRENCY_USD
+          CURRENCY_USD,
         );
         const cryptoWallet = await this.walletService.getWalletByCurrencyName(
-          transactionDTO.currency
+          transactionDTO.currency,
         );
 
         if (!usdWallet || !cryptoWallet)
@@ -53,15 +57,9 @@ export class TransactionService {
         const cryptoAmount = transactionDTO.amount;
         const cryptoTotalPrice = cryptoPrice * cryptoAmount;
 
-        if (
-          type === TRANSACTION_BUY &&
-          usdWallet.balance < cryptoTotalPrice
-        )
+        if (type === TRANSACTION_BUY && usdWallet.balance < cryptoTotalPrice)
           throw new BadRequestException('Insufficient USD balance');
-        if (
-          type === TRANSACTION_SELL &&
-          cryptoWallet.balance < cryptoAmount
-        )
+        if (type === TRANSACTION_SELL && cryptoWallet.balance < cryptoAmount)
           throw new BadRequestException(
             `Insufficient ${transactionDTO.currency} balance`,
           );

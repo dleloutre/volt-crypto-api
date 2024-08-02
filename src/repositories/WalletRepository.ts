@@ -1,6 +1,6 @@
 import { Wallet as WalletModel } from '@db';
 import { IWalletRepository, Wallet } from '@domain/wallet';
-import { Op, Transaction as SequelizeTransaction } from 'sequelize';
+import { Transaction as SequelizeTransaction } from 'sequelize';
 import { Service } from 'typedi';
 
 @Service()

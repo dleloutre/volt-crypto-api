@@ -1,7 +1,7 @@
 import { Entity } from '@domain/Entity';
 
-export const TRANSACTION_BUY = "buy";
-export const TRANSACTION_SELL = "sell";
+export const TRANSACTION_BUY = 'buy';
+export const TRANSACTION_SELL = 'sell';
 
 export type TransactionArgs = {
   id?: number;

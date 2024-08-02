@@ -7,8 +7,6 @@ export enum CurrencyCryptoName {
   BTC = 'btc',
 }*/
 
-
-
 /*export function getCurrencyValues(): CurrencyName[] {
   return Object.values(CurrencyName);
 }

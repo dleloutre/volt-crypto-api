@@ -2,10 +2,10 @@ import 'reflect-metadata';
 
 import { CurrencyService, WalletService } from '@application/services';
 import { Currency } from '@domain/currency';
+import { TRANSACTION_BUY } from '@domain/transaction';
 import { Wallet } from '@domain/wallet';
 import { CurrencyRepository, WalletRepository } from '@repositories';
 import { Container } from 'typedi';
-import { TRANSACTION_BUY } from '@domain/transaction';
 
 jest.mock('@config', () => ({
   config: {
@@ -44,7 +44,7 @@ describe('Wallet Service', () => {
   });
 
   it('returns wallet when valid currency', async () => {
-    const foundCurrency = new Currency({ id: 1, name: "btc" });
+    const foundCurrency = new Currency({ id: 1, name: 'btc' });
     const foundWallet = new Wallet({ balance: 0, currencyId: 1, id: 1 });
 
     mockedCurrencyService.getByName.mockResolvedValue(foundCurrency);
@@ -58,7 +58,7 @@ describe('Wallet Service', () => {
   });
 
   it('returns null when invalid currency', async () => {
-    const foundCurrency = new Currency({ name: "btc" });
+    const foundCurrency = new Currency({ name: 'btc' });
     const foundWallet = new Wallet({ balance: 0, currencyId: 1, id: 1 });
 
     mockedCurrencyService.getByName.mockResolvedValue(foundCurrency);
@@ -112,7 +112,7 @@ describe('Wallet Service', () => {
     await walletService.updateWalletsBalance(
       usdWallet,
       cryptoWallet,
-      "sell",
+      'sell',
       cryptoAmount,
       cryptoTotalPrice,
       {},
@@ -129,4 +129,3 @@ describe('Wallet Service', () => {
     );
   });
 });
-

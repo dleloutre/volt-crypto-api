@@ -1,9 +1,9 @@
 import { CurrencyService } from '@application/services';
+import { TRANSACTION_BUY } from '@domain/transaction';
 import { Wallet } from '@domain/wallet';
 import { WalletRepository } from '@repositories';
 import { Transaction as SequelizeTransaction } from 'sequelize';
 import { Service } from 'typedi';
-import { TRANSACTION_BUY } from '@domain/transaction';
 
 @Service()
 export class WalletService {

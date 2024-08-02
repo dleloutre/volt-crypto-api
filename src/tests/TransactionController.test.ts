@@ -1,11 +1,11 @@
 import { TransactionController } from '@application/controllers/transaction';
 import { TransactionResponseDTO } from '@application/DTOs';
 import { TransactionService } from '@application/services/TransactionService';
+import { TRANSACTION_BUY, TRANSACTION_SELL } from '@domain/transaction';
 import { BadRequestException, InternalErrorException } from '@shared';
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import request from 'supertest';
-import { TRANSACTION_BUY, TRANSACTION_SELL } from '@domain/transaction';
 
 jest.mock('@config', () => ({
   config: {

@@ -1,7 +1,8 @@
 import connection from '@db/SequelizeClient';
 import {
   ITransactionRepository,
-  Transaction, TRANSACTION_BUY,
+  Transaction,
+  TRANSACTION_BUY,
 } from '@domain/transaction';
 import { Transaction as SequelizeTransaction } from 'sequelize';
 import { Service } from 'typedi';
