@@ -87,9 +87,9 @@ curl --location 'http://localhost:8080/api/portfolio'
 ```
 
 ## 📝 Future Enhancements
-To make VCrypto API more scalable and robust, consider the following improvements:
+To make VCrypto API more scalable and robust, I'd consider the following improvements:
 
-* **Asynchronous Processing:** Leverage JavaScript’s asynchronous capabilities to handle multiple processes and queries concurrently.
+* **Asynchronous Processing:** Use JavaScript’s async features to manage multiple processes and queries concurrently.
 * **Caching:** Implement caching for frequently accessed data to improve performance.
 * **User Authentication:** Add user sessions with authentication and authorization strategies like OAuth.
-* **Rate Limiting:** Introduce rate limiting to ensure fair usage and prevent abuse
+* **Rate Limiting:** Introduce rate limiting to ensure fair usage and prevent abuse.
