@@ -2,12 +2,11 @@ services:
   app:
     container_name: volt-crypto-app
     build: .
-    command: [sh, -c, "npm run migrate:up && npm run seed:all && npm start"]
+    command: "npm run dev"
     ports:
       - '8080:8080'
     volumes:
       - ./src:/app/src
-      - ./scripts:/app/scripts
     networks:
       - volt-crypto-network
     depends_on:

@@ -1,6 +1,9 @@
 export class InternalErrorException extends Error {
-  constructor(message: string) {
+  private statusCode: number;
+
+  constructor(message: string, code = 500) {
     super(message);
+    this.statusCode = code;
     Object.setPrototypeOf(this, InternalErrorException.prototype);
   }
 }

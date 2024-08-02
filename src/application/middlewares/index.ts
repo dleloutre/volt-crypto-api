@@ -1,1 +1,1 @@
-export * from './httpErrorHandler';
+export * from './requestValidator';

@@ -12,6 +12,7 @@ type Config = {
   dbUser: string;
   dbPassword: string;
   dbName: string;
+  coindeskUrl: string;
 };
 
 function getConfigValue(key: string): string {
@@ -31,4 +32,5 @@ export const config: Config = {
   dbUser: getConfigValue('DB_USER'),
   dbPassword: getConfigValue('DB_PASSWORD'),
   dbName: getConfigValue('DB_NAME'),
+  coindeskUrl: getConfigValue('COINDESK_URL')
 };

@@ -1,6 +1,9 @@
 export class NotFoundException extends Error {
-  constructor(message: string) {
+  private statusCode: number;
+
+  constructor(message: string, code = 404) {
     super(message);
+    this.statusCode = code;
     Object.setPrototypeOf(this, NotFoundException.prototype);
   }
 }

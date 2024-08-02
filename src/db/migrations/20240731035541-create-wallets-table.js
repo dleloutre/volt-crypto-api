@@ -15,15 +15,6 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id'
-        },
-        onUpdate: 'cascade',
-        onDelete: 'cascade'
-      },
       currency_id: {
         type: Sequelize.INTEGER,
         references: {

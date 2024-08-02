@@ -7,14 +7,12 @@ module.exports = {
     return queryInterface.bulkInsert('wallets', [
       {
         id: 1,
-        user_id: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
         currency_id: 2,
         balance: 50000
       },{
         id: 2,
-        user_id: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
         currency_id: 1,

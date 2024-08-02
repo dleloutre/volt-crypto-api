@@ -1,19 +1,18 @@
-import { CurrencyName } from '@domain/currency/CurrencyName';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
-  timestamps: false,
   tableName: 'currencies',
 })
 export class Currency extends Model {
   @Column({
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     allowNull: false,
+    primaryKey: true,
   })
   id!: number;
 
   @Column({
-    type: DataType.ENUM(...Object.values(CurrencyName)),
+    type: DataType.ENUM("btc","usd"),
     allowNull: false,
     unique: true,
   })

@@ -1,5 +1,5 @@
 import { Currency } from './Currency';
 
 export interface ICurrencyRepository {
-  findById(id: string): Promise<Currency | null>;
+  findByName(name: string): Promise<Currency | null>;
 }

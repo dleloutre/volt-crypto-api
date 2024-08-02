@@ -1,34 +1,27 @@
-import { TransactionType } from '@domain/transaction/TransactionType';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({
-  timestamps: false,
   tableName: 'transactions',
 })
 export class Transaction extends Model {
   @Column({
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     allowNull: false,
+    primaryKey: true,
   })
   id!: number;
 
   @Column({
-    type: DataType.UUID,
-    allowNull: false,
-  })
-  user_id!: number;
-
-  @Column({
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   currency_id!: number;
 
   @Column({
-    type: DataType.ENUM(...Object.values(TransactionType)),
+    type: DataType.ENUM("buy","sell"),
     allowNull: false,
   })
-  type!: TransactionType;
+  type!: string;
 
   @Column({
     type: DataType.FLOAT,

@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
     "module": "CommonJS",
     "target": "ES2015",
     "rootDir": "src",
@@ -8,7 +13,6 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "experimentalDecorators": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -20,12 +24,14 @@
       "@application/*": ["application/*"],
       "@domain": ["domain"],
       "@domain/*": ["domain/*"],
-      "@infra": ["infra"],
-      "@infra/*": ["infra/*"],
+      "@db": ["db"],
+      "@db/*": ["db/*"],
       "@config": ["config"],
-      "@config/*": ["config/*"]
+      "@config/*": ["config/*"],
+      "@repositories": ["repositories"],
+      "@repositories/*": ["repositories/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
