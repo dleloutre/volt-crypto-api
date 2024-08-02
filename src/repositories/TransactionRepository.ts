@@ -1,8 +1,7 @@
 import connection from '@db/SequelizeClient';
 import {
   ITransactionRepository,
-  Transaction,
-  TransactionType,
+  Transaction, TRANSACTION_BUY,
 } from '@domain/transaction';
 import { Transaction as SequelizeTransaction } from 'sequelize';
 import { Service } from 'typedi';
@@ -33,7 +32,7 @@ export class TransactionRepository implements ITransactionRepository {
         ],
       ],
       where: {
-        type: TransactionType.BUY,
+        type: TRANSACTION_BUY,
         currency_id: currencyId,
       },
     });

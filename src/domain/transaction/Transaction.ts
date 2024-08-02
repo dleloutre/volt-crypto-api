@@ -1,18 +1,20 @@
 import { Entity } from '@domain/Entity';
-import { TransactionType } from '@domain/transaction/TransactionType';
+
+export const TRANSACTION_BUY = "buy";
+export const TRANSACTION_SELL = "sell";
 
 export type TransactionArgs = {
   id?: number;
   amount: number;
   price: number;
-  type: TransactionType;
+  type: string;
   currencyId: number;
 };
 
 export class Transaction extends Entity {
   public amount: number;
   public price: number;
-  public type: TransactionType;
+  public type: string;
   public currency_id: number;
 
   constructor(args: TransactionArgs) {

@@ -1,5 +1,5 @@
 import { Currency as CurrencyModel } from '@db';
-import { Currency, CurrencyName, ICurrencyRepository } from '@domain/currency';
+import { Currency, ICurrencyRepository } from '@domain/currency';
 import { Service } from 'typedi';
 
 @Service()
@@ -9,7 +9,7 @@ export class CurrencyRepository implements ICurrencyRepository {
     if (!currency) return null;
     return new Currency({
       id: currency.id,
-      name: currency.name as CurrencyName,
+      name: currency.name,
     });
   }
 }

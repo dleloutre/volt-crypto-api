@@ -1,26 +1,27 @@
 import 'reflect-metadata';
+import { Container } from 'typedi';
 
-import { TransactionRequestDTO } from '@application/DTOs';
 import {
   CoindeskService,
   CurrencyService,
   TransactionService,
-  WalletService,
+  WalletService
 } from '@application/services';
-import { config } from '@config';
-import { CurrencyName, Transaction, TransactionType } from '@domain';
+import { TransactionRequestDTO } from '@application/DTOs';
 import {
   CurrencyRepository,
   TransactionRepository,
-  WalletRepository,
+  WalletRepository
 } from '@repositories';
 import {
   BadRequestException,
   InternalErrorException,
-  NotFoundException,
+  NotFoundException
 } from '@shared/exceptions';
 import { anything } from 'ts-mockito';
-import { Container } from 'typedi';
+import { TRANSACTION_BUY } from '@domain/transaction';
+import { CURRENCY_CRYPTO, CURRENCY_USD } from '@domain/currency';
+import { Wallet } from '@domain/wallet';
 
 jest.mock('@config', () => ({
   config: {
@@ -33,47 +34,49 @@ jest.mock('@config', () => ({
   },
 }));
 
-jest.mock('@repositories/TransactionRepository');
-jest.mock('@repositories/WalletRepository');
-jest.mock('@repositories/CurrencyRepository');
-jest.mock('@application/services/CoinDesk/CoindeskService');
-jest.mock('@application/services/WalletService');
-jest.mock('@application/services/CurrencyService');
 jest.mock('@db/SequelizeClient', () => ({
   transaction: jest.fn().mockImplementation((callback) => {
     return callback(jest.fn());
   }),
 }));
+jest.mock('@repositories/TransactionRepository');
+jest.mock('@application/services/CoinDesk/CoindeskService');
+jest.mock('@repositories/WalletRepository');
+jest.mock('@repositories/CurrencyRepository');
+jest.mock('@application/services/CurrencyService');
+jest.mock('@application/services/WalletService');
 
-const mockedTransactionRepository =
-  new TransactionRepository() as jest.Mocked<TransactionRepository>;
-const mockedCoindeskService =
-  new CoindeskService() as jest.Mocked<CoindeskService>;
-const mockedCurrencyRepository =
-  new CurrencyRepository() as jest.Mocked<CurrencyRepository>;
-const mockedCurrencyService = new CurrencyService(
-  mockedCurrencyRepository,
-) as jest.Mocked<CurrencyService>;
-const mockedWalletRepository =
-  new WalletRepository() as jest.Mocked<WalletRepository>;
-const mockedWalletService = new WalletService(
-  mockedWalletRepository,
-  mockedCurrencyService,
-) as jest.Mocked<WalletService>;
-
-describe('TransactionService', () => {
+describe('Transaction Service', () => {
   let transactionService: TransactionService;
+  let mockedTransactionRepository: jest.Mocked<TransactionRepository>;
+  let mockedCoindeskService: jest.Mocked<CoindeskService>;
+  let mockedWalletRepository: jest.Mocked<WalletRepository>;
+  let mockedCurrencyRepository: jest.Mocked<CurrencyRepository>;
+  let mockedCurrencyService: jest.Mocked<CurrencyService>;
+  let mockedWalletService: jest.Mocked<WalletService>;
 
   beforeEach(() => {
     jest.clearAllMocks();
     Container.reset();
 
-    Container.set(TransactionRepository, mockedTransactionRepository);
-    Container.set(CoindeskService, mockedCoindeskService);
-    Container.set(WalletService, mockedWalletService);
-    Container.set(CurrencyService, mockedCurrencyService);
+    mockedTransactionRepository = new TransactionRepository() as jest.Mocked<TransactionRepository>;
+    mockedCoindeskService = new CoindeskService() as jest.Mocked<CoindeskService>;
+    mockedWalletRepository = new WalletRepository() as jest.Mocked<WalletRepository>;
+    mockedCurrencyRepository = new CurrencyRepository() as jest.Mocked<CurrencyRepository>;
+    mockedCurrencyService = new CurrencyService(mockedCurrencyRepository) as jest.Mocked<CurrencyService>;
+    mockedWalletService = new WalletService(mockedWalletRepository, mockedCurrencyService) as jest.Mocked<WalletService>;
 
-    transactionService = Container.get(TransactionService);
+    Container.set('TransactionRepositoryT', mockedTransactionRepository);
+    Container.set('CoindeskServiceT', mockedCoindeskService);
+    Container.set('WalletServiceT', mockedWalletService);
+    Container.set('CurrencyServiceT', mockedCurrencyService);
+
+    transactionService = new TransactionService(
+      Container.get('TransactionRepositoryT'),
+      Container.get('CoindeskServiceT'),
+      Container.get('WalletServiceT'),
+      Container.get('CurrencyServiceT')
+    );
   });
 
   it('should perform a buy transaction successfully', async () => {
@@ -82,14 +85,13 @@ describe('TransactionService', () => {
       currency: 'btc',
     };
     const cryptoPrice = 30000;
-    const usdWallet = { balance: 100000, currency_id: 1, id: 1 };
-    const cryptoWallet = { balance: 1, currency_id: 2, id: 2 };
-
+    const usdWallet: Wallet = { balance: 100000, currency_id: 1, id: 1 };
+    const cryptoWallet: Wallet = { balance: 1, currency_id: 2, id: 2 };
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
     mockedWalletService.getWalletByCurrencyName.mockImplementation(
       (name: string) => {
-        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
-        if (name === 'btc') return Promise.resolve(cryptoWallet);
+        if (name === CURRENCY_USD) return Promise.resolve(usdWallet);
+        if (name === CURRENCY_CRYPTO) return Promise.resolve(cryptoWallet);
         return Promise.resolve(null);
       },
     );
@@ -102,7 +104,7 @@ describe('TransactionService', () => {
       ...transactionDTO,
       price: cryptoPrice,
       currencyId: cryptoWallet.currency_id,
-      type: TransactionType.BUY,
+      type: TRANSACTION_BUY,
     });
     expect(mockedCoindeskService.getBitcoinPrice).toHaveBeenCalledTimes(1);
     expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(
@@ -142,7 +144,7 @@ describe('TransactionService', () => {
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
     mockedWalletService.getWalletByCurrencyName.mockImplementation(
       (name: string) => {
-        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
+        if (name === "usd") return Promise.resolve(usdWallet);
         if (name === 'btc') return Promise.resolve(cryptoWallet);
         return Promise.resolve(null);
       },
@@ -169,7 +171,7 @@ describe('TransactionService', () => {
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
     mockedWalletService.getWalletByCurrencyName.mockImplementation(
       (name: string) => {
-        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
+        if (name === "usd") return Promise.resolve(usdWallet);
         if (name === 'btc') return Promise.resolve(cryptoWallet);
         return Promise.resolve(null);
       },
@@ -185,7 +187,7 @@ describe('TransactionService', () => {
   });
 
   it('should return investments successfully', async () => {
-    const currency = { id: 1, name: CurrencyName.BTC };
+    const currency = { id: 1, name: "btc" };
     const totalInvested = 50000;
 
     mockedCurrencyService.getByName.mockResolvedValue(currency);
@@ -197,7 +199,7 @@ describe('TransactionService', () => {
 
     expect(result).toBe(totalInvested);
     expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(
-      CurrencyName.BTC,
+      "btc",
     );
     expect(mockedTransactionRepository.findTotalInvested).toHaveBeenCalledWith(
       currency.id,
@@ -211,7 +213,7 @@ describe('TransactionService', () => {
       InternalErrorException,
     );
     expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(
-      CurrencyName.BTC,
+      CURRENCY_CRYPTO,
     );
   });
 });

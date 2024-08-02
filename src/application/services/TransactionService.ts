@@ -1,20 +1,19 @@
 import {
   TransactionRequestDTO,
   TransactionResponseDTO,
-} from '@application/DTOs/';
-import { CoindeskService } from '@application/services/CoinDesk/CoindeskService';
-import { CurrencyService } from '@application/services/CurrencyService';
-import { WalletService } from '@application/services/WalletService';
+} from '@application/DTOs';
+import { CoindeskService } from '@application/services';
+import { CurrencyService } from '@application/services';
+import { WalletService } from '@application/services';
 import connection from '@db/SequelizeClient';
-import { CurrencyName } from '@domain/currency';
-import { Transaction, TransactionType } from '@domain/transaction';
+import { CURRENCY_CRYPTO, CURRENCY_USD } from '@domain/currency';
+import { Transaction, TRANSACTION_BUY, TRANSACTION_SELL } from '@domain/transaction';
 import {
   BadRequestException,
   InternalErrorException,
   NotFoundException,
-} from '@shared/exceptions';
+} from '@shared';
 import { TransactionRepository } from 'repositories';
-import { Not } from 'sequelize-typescript';
 import { Service } from 'typedi';
 
 @Service()
@@ -27,25 +26,25 @@ export class TransactionService {
   ) {}
 
   public async buy(transactionDTO: TransactionRequestDTO) {
-    return await this.performTransaction(transactionDTO, TransactionType.BUY);
+    return await this.performTransaction(transactionDTO, TRANSACTION_BUY);
   }
 
   public async sell(transactionDTO: TransactionRequestDTO) {
-    return await this.performTransaction(transactionDTO, TransactionType.SELL);
+    return await this.performTransaction(transactionDTO, TRANSACTION_SELL);
   }
 
   private async performTransaction(
     transactionDTO: TransactionRequestDTO,
-    type: TransactionType,
+    type: string,
   ): Promise<TransactionResponseDTO> {
     try {
       return await connection.transaction(async (dbTransaction) => {
         const cryptoPrice = await this.coindeskService.getBitcoinPrice();
         const usdWallet = await this.walletService.getWalletByCurrencyName(
-          CurrencyName.USD,
+          CURRENCY_USD
         );
         const cryptoWallet = await this.walletService.getWalletByCurrencyName(
-          transactionDTO.currency,
+          transactionDTO.currency
         );
 
         if (!usdWallet || !cryptoWallet)
@@ -55,12 +54,12 @@ export class TransactionService {
         const cryptoTotalPrice = cryptoPrice * cryptoAmount;
 
         if (
-          type === TransactionType.BUY &&
+          type === TRANSACTION_BUY &&
           usdWallet.balance < cryptoTotalPrice
         )
           throw new BadRequestException('Insufficient USD balance');
         if (
-          type === TransactionType.SELL &&
+          type === TRANSACTION_SELL &&
           cryptoWallet.balance < cryptoAmount
         )
           throw new BadRequestException(
@@ -102,7 +101,7 @@ export class TransactionService {
   }
 
   public async getInvestments() {
-    const currency = await this.currencyService.getByName(CurrencyName.BTC);
+    const currency = await this.currencyService.getByName(CURRENCY_CRYPTO);
     if (!currency?.id)
       throw new InternalErrorException('Currency ID not found');
 

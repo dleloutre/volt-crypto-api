@@ -1,3 +1,3 @@
 export * from './ITransactionRepository';
 export * from './Transaction';
-export * from './TransactionType';
+//export * from './del_TransactionType';

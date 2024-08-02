@@ -1,4 +1,4 @@
-import { TransactionService } from '@application/services/TransactionService';
+import { TransactionService } from '@application/services';
 import { ErrorResponse } from '@shared/requests/ErrorResponse';
 import { requestWrapper } from '@shared/requests/requestWrapper';
 import { SuccessResponse } from '@shared/requests/SuccessResponse';

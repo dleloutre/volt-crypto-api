@@ -1,9 +1,9 @@
-import { CurrencyService } from '@application/services/CurrencyService';
-import { TransactionType } from '@domain/transaction';
+import { CurrencyService } from '@application/services';
 import { Wallet } from '@domain/wallet';
 import { WalletRepository } from '@repositories';
 import { Transaction as SequelizeTransaction } from 'sequelize';
 import { Service } from 'typedi';
+import { TRANSACTION_BUY } from '@domain/transaction';
 
 @Service()
 export class WalletService {
@@ -30,7 +30,7 @@ export class WalletService {
   public async updateWalletsBalance(
     usdWallet: Wallet,
     cryptoWallet: Wallet,
-    type: TransactionType,
+    type: string,
     cryptoAmount: number,
     cryptoTotalPrice: number,
     options: { transaction?: SequelizeTransaction },
@@ -38,7 +38,7 @@ export class WalletService {
     const updatedUsdWallet = {
       ...usdWallet,
       balance:
-        type === TransactionType.BUY
+        type === TRANSACTION_BUY
           ? usdWallet.balance - cryptoTotalPrice
           : usdWallet.balance + cryptoTotalPrice,
     };
@@ -46,7 +46,7 @@ export class WalletService {
     const updatedCryptoWallet = {
       ...cryptoWallet,
       balance:
-        type === TransactionType.BUY
+        type === TRANSACTION_BUY
           ? cryptoWallet.balance + cryptoAmount
           : cryptoWallet.balance - cryptoAmount,
     };

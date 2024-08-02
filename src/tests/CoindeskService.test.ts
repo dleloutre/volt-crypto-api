@@ -6,6 +6,11 @@ import { Container } from 'typedi';
 
 jest.mock('@config', () => ({
   config: {
+    dbUrl: 'test',
+    dbHost: 'test',
+    dbUser: 'test',
+    dbPassword: 'test',
+    dbName: 'test',
     coindeskUrl: 'https://mocked-url.com',
   },
 }));

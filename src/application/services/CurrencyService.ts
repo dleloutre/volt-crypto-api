@@ -1,5 +1,5 @@
 import { Currency } from '@domain/currency';
-import { CurrencyRepository } from '@repositories/CurrencyRepository';
+import { CurrencyRepository } from '@repositories';
 import { Service } from 'typedi';
 
 @Service()

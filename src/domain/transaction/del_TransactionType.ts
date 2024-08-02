@@ -1,9 +1,11 @@
-export enum TransactionType {
+/*export enum TransactionType {
   BUY = 'buy',
   SELL = 'sell',
-}
+}*/
 
-export function getTransactionTypeValues(): TransactionType[] {
+
+
+/*export function getTransactionTypeValues(): string[] {
   return Object.values(TransactionType);
 }
 
@@ -12,4 +14,4 @@ export function getTransactionTypeIn(
 ): TransactionType[] {
   if (!param) return getTransactionTypeValues();
   return param.split(',') as TransactionType[];
-}
+}*/

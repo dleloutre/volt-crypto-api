@@ -1,3 +1,3 @@
 export * from './Currency';
-export * from './CurrencyName';
+//export * from './del_CurrencyName';
 export * from './ICurrencyRepository';

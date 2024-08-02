@@ -1,17 +1,19 @@
-export enum CurrencyName {
+/*export enum CurrencyName {
   BTC = 'btc',
   USD = 'usd',
 }
 
 export enum CurrencyCryptoName {
   BTC = 'btc',
-}
+}*/
 
-export function getCurrencyValues(): CurrencyName[] {
+
+
+/*export function getCurrencyValues(): CurrencyName[] {
   return Object.values(CurrencyName);
 }
 
 export function getCurrencyIn(param: string | undefined): CurrencyName[] {
   if (!param) return getCurrencyValues();
   return param.split(',') as CurrencyName[];
-}
+}*/

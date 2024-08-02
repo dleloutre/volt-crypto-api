@@ -1,12 +1,11 @@
 import { TransactionController } from '@application/controllers/transaction';
 import { TransactionResponseDTO } from '@application/DTOs';
 import { TransactionService } from '@application/services/TransactionService';
-import { config } from '@config';
-import { TransactionType } from '@domain';
 import { BadRequestException, InternalErrorException } from '@shared';
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import request from 'supertest';
+import { TRANSACTION_BUY, TRANSACTION_SELL } from '@domain/transaction';
 
 jest.mock('@config', () => ({
   config: {
@@ -48,7 +47,7 @@ describe('TransactionController', () => {
         ...transactionDTO,
         price: 30000,
         currencyId: 1,
-        type: TransactionType.BUY,
+        type: TRANSACTION_BUY,
       };
 
       mockedTransactionService.buy.mockResolvedValue(mockedResponse);
@@ -117,7 +116,7 @@ describe('TransactionController', () => {
         ...transactionDTO,
         price: 30000,
         currencyId: 1,
-        type: TransactionType.SELL,
+        type: TRANSACTION_SELL,
       };
 
       mockedTransactionService.sell.mockResolvedValue(mockedResponse);

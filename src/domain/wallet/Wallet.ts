@@ -1,4 +1,4 @@
-import { Entity } from '@domain/Entity';
+import { Entity } from '@domain';
 
 export type WalletArgs = {
   id?: number;
