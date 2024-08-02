@@ -7,6 +7,7 @@ import {
   TransactionService,
   WalletService,
 } from '@application/services';
+import { config } from '@config';
 import { CURRENCY_CRYPTO, CURRENCY_USD } from '@domain/currency';
 import { TRANSACTION_BUY } from '@domain/transaction';
 import { Wallet } from '@domain/wallet';
@@ -22,7 +23,6 @@ import {
 } from '@shared/exceptions';
 import { anything } from 'ts-mockito';
 import { Container } from 'typedi';
-import { config } from '@config';
 
 jest.mock('@config', () => ({
   config: {
