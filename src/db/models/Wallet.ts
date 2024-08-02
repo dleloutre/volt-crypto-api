@@ -6,7 +6,6 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 export class Wallet extends Model {
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
     primaryKey: true,
   })
   id!: number;

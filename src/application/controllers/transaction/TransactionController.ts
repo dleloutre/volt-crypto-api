@@ -1,15 +1,15 @@
-import { Service } from 'typedi';
-import { Request } from 'express';
-import { requestWrapper } from '@shared/requests/requestWrapper';
-import { SuccessResponse } from '@shared/requests/SuccessResponse';
 import { TransactionService } from '@application/services/TransactionService';
 import { ErrorResponse } from '@shared/requests/ErrorResponse';
+import { requestWrapper } from '@shared/requests/requestWrapper';
+import { SuccessResponse } from '@shared/requests/SuccessResponse';
+import { Request } from 'express';
+import { Service } from 'typedi';
 
 @Service()
 export class TransactionController {
   constructor(public transactionService: TransactionService) {}
 
-  buy = requestWrapper(async(req: Request) => {
+  buy = requestWrapper(async (req: Request) => {
     try {
       const response = await this.transactionService.buy(req.body);
       return new SuccessResponse(response);
@@ -18,7 +18,7 @@ export class TransactionController {
     }
   });
 
-  sell = requestWrapper(async(req: Request) => {
+  sell = requestWrapper(async (req: Request) => {
     try {
       const response = await this.transactionService.sell(req.body);
       return new SuccessResponse(response);

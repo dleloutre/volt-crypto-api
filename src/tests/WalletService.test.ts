@@ -1,9 +1,10 @@
 import 'reflect-metadata';
-import { Container } from 'typedi';
-import { WalletRepository, CurrencyRepository } from '@repositories';
+
 import { CurrencyService, WalletService } from '@application/services';
-import { Currency, CurrencyName, Wallet, TransactionType } from '@domain';
 import { config } from '@config';
+import { Currency, CurrencyName, TransactionType, Wallet } from '@domain';
+import { CurrencyRepository, WalletRepository } from '@repositories';
+import { Container } from 'typedi';
 
 jest.mock('@config', () => ({
   config: {
@@ -29,8 +30,11 @@ describe('Wallet Service', () => {
     jest.clearAllMocks();
     Container.reset();
 
-    mockedWalletRepository = new WalletRepository() as jest.Mocked<WalletRepository>;
-    mockedCurrencyService = new CurrencyService(new CurrencyRepository() as jest.Mocked<CurrencyRepository>) as jest.Mocked<CurrencyService>;
+    mockedWalletRepository =
+      new WalletRepository() as jest.Mocked<WalletRepository>;
+    mockedCurrencyService = new CurrencyService(
+      new CurrencyRepository() as jest.Mocked<CurrencyRepository>,
+    ) as jest.Mocked<CurrencyService>;
 
     Container.set(WalletRepository, mockedWalletRepository);
     Container.set(CurrencyService, mockedCurrencyService);
@@ -81,17 +85,17 @@ describe('Wallet Service', () => {
       TransactionType.BUY,
       cryptoAmount,
       cryptoTotalPrice,
-      {}
+      {},
     );
 
     expect(mockedUpdate).toHaveBeenCalledTimes(2);
     expect(mockedUpdate).toHaveBeenCalledWith(
       { ...usdWallet, balance: 500 },
-      {}
+      {},
     );
     expect(mockedUpdate).toHaveBeenCalledWith(
       { ...cryptoWallet, balance: 3 },
-      {}
+      {},
     );
   });
 
@@ -110,17 +114,17 @@ describe('Wallet Service', () => {
       TransactionType.SELL,
       cryptoAmount,
       cryptoTotalPrice,
-      {}
+      {},
     );
 
     expect(mockedUpdate).toHaveBeenCalledTimes(2);
     expect(mockedUpdate).toHaveBeenCalledWith(
       { ...usdWallet, balance: 1500 },
-      {}
+      {},
     );
     expect(mockedUpdate).toHaveBeenCalledWith(
       { ...cryptoWallet, balance: 1 },
-      {}
+      {},
     );
   });
 });

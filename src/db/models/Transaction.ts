@@ -6,8 +6,9 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 export class Transaction extends Model {
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
     primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
   })
   id!: number;
 
@@ -18,7 +19,7 @@ export class Transaction extends Model {
   currency_id!: number;
 
   @Column({
-    type: DataType.ENUM("buy","sell"),
+    type: DataType.ENUM('buy', 'sell'),
     allowNull: false,
   })
   type!: string;

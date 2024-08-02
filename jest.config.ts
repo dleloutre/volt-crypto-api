@@ -5,7 +5,8 @@ module.exports = {
   moduleNameMapper: {
     '@shared': '<rootDir>/src/shared/$1',
     '@application/services/(.*)': '<rootDir>/src/application/services/$1',
-    '@application/controllers/transaction/': '<rootDir>/src/application/controllers/transaction/$1',
+    '@application/controllers/transaction/':
+      '<rootDir>/src/application/controllers/transaction/$1',
     '@application/DTOs/(.*)': '<rootDir>/src/application/DTOs/$1',
     '@application/(.*)': '<rootDir>/src/application/$1',
     '@domain': '<rootDir>/src/domain/$1',

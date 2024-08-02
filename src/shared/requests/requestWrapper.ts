@@ -1,6 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-type AsyncFunction = (req: Request, res: Response, next: NextFunction) => Promise<any>;
+type AsyncFunction = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<any>;
 
 export const requestWrapper = (handler: AsyncFunction) => {
   return async (req: Request, res: Response, next: NextFunction) => {

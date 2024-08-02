@@ -1,8 +1,8 @@
+import { CoindeskService } from '@application/services';
+import { config } from '@config';
+import { InternalErrorException } from '@shared/exceptions';
 import axios from 'axios';
 import { Container } from 'typedi';
-import { CoindeskService } from '@application/services';
-import { InternalErrorException } from '@shared/exceptions';
-import { config } from '@config';
 
 jest.mock('@config', () => ({
   config: {
@@ -41,15 +41,23 @@ describe('CoindeskService', () => {
 
     const price = await coindeskService.getBitcoinPrice();
     expect(price).toBe(30000);
-    expect(mockedAxios.get).toHaveBeenCalledWith(config.coindeskUrl + '/bpi/currentprice.json');
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      config.coindeskUrl + '/bpi/currentprice.json',
+    );
   });
 
   it('should throw InternalErrorException when the request fails', async () => {
     const errorMessage = 'Network Error';
     mockedAxios.get.mockRejectedValue(new Error(errorMessage));
 
-    await expect(coindeskService.getBitcoinPrice()).rejects.toThrow(InternalErrorException);
-    await expect(coindeskService.getBitcoinPrice()).rejects.toThrow(`Failed to fetch Bitcoin price: ${errorMessage}`);
-    expect(mockedAxios.get).toHaveBeenCalledWith(config.coindeskUrl + '/bpi/currentprice.json');
+    await expect(coindeskService.getBitcoinPrice()).rejects.toThrow(
+      InternalErrorException,
+    );
+    await expect(coindeskService.getBitcoinPrice()).rejects.toThrow(
+      `Failed to fetch Bitcoin price: ${errorMessage}`,
+    );
+    expect(mockedAxios.get).toHaveBeenCalledWith(
+      config.coindeskUrl + '/bpi/currentprice.json',
+    );
   });
 });

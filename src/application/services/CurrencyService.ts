@@ -1,6 +1,6 @@
-import { Service } from 'typedi';
-import { CurrencyRepository } from '@repositories/CurrencyRepository';
 import { Currency } from '@domain/currency';
+import { CurrencyRepository } from '@repositories/CurrencyRepository';
+import { Service } from 'typedi';
 
 @Service()
 export class CurrencyService {

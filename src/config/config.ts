@@ -32,5 +32,5 @@ export const config: Config = {
   dbUser: getConfigValue('DB_USER'),
   dbPassword: getConfigValue('DB_PASSWORD'),
   dbName: getConfigValue('DB_NAME'),
-  coindeskUrl: getConfigValue('COINDESK_URL')
+  coindeskUrl: getConfigValue('COINDESK_URL'),
 };

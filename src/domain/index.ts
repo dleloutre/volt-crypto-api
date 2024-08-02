@@ -1,4 +1,4 @@
-export * from './Entity';
 export * from './currency';
-export * from './wallet';
+export * from './Entity';
 export * from './transaction';
+export * from './wallet';

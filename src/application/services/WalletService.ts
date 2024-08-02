@@ -1,22 +1,29 @@
-import { Service } from 'typedi';
-import { Transaction as SequelizeTransaction } from 'sequelize';
-import { WalletRepository } from '@repositories';
-import { Wallet } from '@domain/wallet';
-import { TransactionType } from '@domain/transaction';
 import { CurrencyService } from '@application/services/CurrencyService';
-
+import { TransactionType } from '@domain/transaction';
+import { Wallet } from '@domain/wallet';
+import { WalletRepository } from '@repositories';
+import { Transaction as SequelizeTransaction } from 'sequelize';
+import { Service } from 'typedi';
 
 @Service()
 export class WalletService {
-  constructor(public walletRepository: WalletRepository, public currencyService: CurrencyService) {}
+  constructor(
+    public walletRepository: WalletRepository,
+    public currencyService: CurrencyService,
+  ) {}
 
-  public async getWalletByCurrencyName(currencyName: string): Promise<Wallet | null> {
+  public async getWalletByCurrencyName(
+    currencyName: string,
+  ): Promise<Wallet | null> {
     const currency = await this.currencyService.getByName(currencyName);
     if (!currency?.id) return null;
     return await this.walletRepository.findByCurrencyId(currency.id);
   }
 
-  public async update(wallet: Wallet, options: { transaction?: SequelizeTransaction }) {
+  public async update(
+    wallet: Wallet,
+    options: { transaction?: SequelizeTransaction },
+  ) {
     await this.walletRepository.update(wallet, options);
   }
 
@@ -26,16 +33,22 @@ export class WalletService {
     type: TransactionType,
     cryptoAmount: number,
     cryptoTotalPrice: number,
-    options: { transaction?: SequelizeTransaction }
+    options: { transaction?: SequelizeTransaction },
   ) {
     const updatedUsdWallet = {
       ...usdWallet,
-      balance: type === TransactionType.BUY ? usdWallet.balance - cryptoTotalPrice : usdWallet.balance + cryptoTotalPrice,
+      balance:
+        type === TransactionType.BUY
+          ? usdWallet.balance - cryptoTotalPrice
+          : usdWallet.balance + cryptoTotalPrice,
     };
 
     const updatedCryptoWallet = {
       ...cryptoWallet,
-      balance: type === TransactionType.BUY ? cryptoWallet.balance + cryptoAmount : cryptoWallet.balance - cryptoAmount,
+      balance:
+        type === TransactionType.BUY
+          ? cryptoWallet.balance + cryptoAmount
+          : cryptoWallet.balance - cryptoAmount,
     };
 
     await this.update(updatedUsdWallet, options);

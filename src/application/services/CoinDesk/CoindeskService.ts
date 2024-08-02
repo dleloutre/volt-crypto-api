@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
 import { config } from '@config';
-import { Service } from 'typedi';
 import { InternalErrorException } from '@shared/exceptions';
+import axios, { AxiosResponse } from 'axios';
+import { Service } from 'typedi';
 
 interface BitcoinPriceResponse {
   bpi: {
@@ -21,10 +21,14 @@ export class CoindeskService {
 
   public async getBitcoinPrice(): Promise<number> {
     try {
-      const response: AxiosResponse<BitcoinPriceResponse> = await axios.get(this.url(this.BITCOIN_PRICE_ENDPOINT));
+      const response: AxiosResponse<BitcoinPriceResponse> = await axios.get(
+        this.url(this.BITCOIN_PRICE_ENDPOINT),
+      );
       return response.data.bpi.USD.rate_float;
     } catch (error) {
-      throw new InternalErrorException(`Failed to fetch Bitcoin price: ${error.message}`);
+      throw new InternalErrorException(
+        `Failed to fetch Bitcoin price: ${error.message}`,
+      );
     }
   }
 }

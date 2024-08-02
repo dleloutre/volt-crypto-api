@@ -1,28 +1,41 @@
-import { Service } from 'typedi';
-import { ITransactionRepository, Transaction, TransactionType } from '@domain/transaction';
-import { Transaction as TransactionModel} from '../db';
-import { Transaction as SequelizeTransaction } from 'sequelize';
 import connection from '@db/SequelizeClient';
+import {
+  ITransactionRepository,
+  Transaction,
+  TransactionType,
+} from '@domain/transaction';
+import { Transaction as SequelizeTransaction } from 'sequelize';
+import { Service } from 'typedi';
+
+import { Transaction as TransactionModel } from '../db';
 
 @Service()
 export class TransactionRepository implements ITransactionRepository {
-
-  async create(transaction: Transaction, options: { transaction?: SequelizeTransaction }): Promise<[TransactionModel, boolean | null]> {
+  async create(
+    transaction: Transaction,
+    options: { transaction?: SequelizeTransaction },
+  ): Promise<TransactionModel> {
     const { id, ...transactionWithoutId } = transaction;
-    return await TransactionModel.upsert({
-      ...transactionWithoutId
-    }, options);
+    return await TransactionModel.create(
+      {
+        ...transactionWithoutId,
+      },
+      options,
+    );
   }
 
   findTotalInvested(currencyId: number) {
     return TransactionModel.findAll({
       attributes: [
-        [connection.fn('SUM', connection.literal('amount * price')), 'totalInvestment']
+        [
+          connection.fn('SUM', connection.literal('amount * price')),
+          'totalInvestment',
+        ],
       ],
       where: {
         type: TransactionType.BUY,
-        currency_id: currencyId
-      }
+        currency_id: currencyId,
+      },
     });
   }
 }

@@ -1,12 +1,12 @@
-import request from 'supertest';
 import { TransactionController } from '@application/controllers/transaction';
-import { TransactionService } from '@application/services/TransactionService';
-import { BadRequestException, InternalErrorException } from '@shared';
-import express, { Express } from 'express';
-import bodyParser from 'body-parser';
 import { TransactionResponseDTO } from '@application/DTOs';
-import { TransactionType } from '@domain';
+import { TransactionService } from '@application/services/TransactionService';
 import { config } from '@config';
+import { TransactionType } from '@domain';
+import { BadRequestException, InternalErrorException } from '@shared';
+import bodyParser from 'body-parser';
+import express, { Express } from 'express';
+import request from 'supertest';
 
 jest.mock('@config', () => ({
   config: {
@@ -27,10 +27,12 @@ const mockedTransactionService = new TransactionService(
   {} as any,
   {} as any,
   {} as any,
-  {} as any
+  {} as any,
 ) as jest.Mocked<TransactionService>;
 
-const transactionController = new TransactionController(mockedTransactionService);
+const transactionController = new TransactionController(
+  mockedTransactionService,
+);
 app.post('/api/buy', transactionController.buy);
 app.post('/api/sell', transactionController.sell);
 
@@ -42,7 +44,12 @@ describe('TransactionController', () => {
   describe('buy', () => {
     it('should return success response when transaction is successful', async () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
-      const mockedResponse: TransactionResponseDTO = { ...transactionDTO, price: 30000, currencyId: 1, type: TransactionType.BUY };
+      const mockedResponse: TransactionResponseDTO = {
+        ...transactionDTO,
+        price: 30000,
+        currencyId: 1,
+        type: TransactionType.BUY,
+      };
 
       mockedTransactionService.buy.mockResolvedValue(mockedResponse);
 
@@ -54,7 +61,7 @@ describe('TransactionController', () => {
       expect(response.body).toEqual({
         success: true,
         data: mockedResponse,
-        statusCode: 200
+        statusCode: 200,
       });
     });
 
@@ -62,7 +69,9 @@ describe('TransactionController', () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
       const errorMessage = 'Insufficient balance';
 
-      mockedTransactionService.buy.mockRejectedValue(new BadRequestException(errorMessage));
+      mockedTransactionService.buy.mockRejectedValue(
+        new BadRequestException(errorMessage),
+      );
 
       const response = await request(app)
         .post('/api/buy')
@@ -74,7 +83,7 @@ describe('TransactionController', () => {
         data: {
           message: errorMessage,
         },
-        statusCode: 400
+        statusCode: 400,
       });
     });
 
@@ -82,7 +91,9 @@ describe('TransactionController', () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
       const errorMessage = 'Internal error';
 
-      mockedTransactionService.buy.mockRejectedValue(new InternalErrorException(errorMessage));
+      mockedTransactionService.buy.mockRejectedValue(
+        new InternalErrorException(errorMessage),
+      );
 
       const response = await request(app)
         .post('/api/buy')
@@ -94,7 +105,7 @@ describe('TransactionController', () => {
         data: {
           message: errorMessage,
         },
-        statusCode: 500
+        statusCode: 500,
       });
     });
   });
@@ -102,7 +113,12 @@ describe('TransactionController', () => {
   describe('sell', () => {
     it('should return success response when transaction is successful', async () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
-      const mockedResponse: TransactionResponseDTO = { ...transactionDTO, price: 30000, currencyId: 1, type: TransactionType.SELL };
+      const mockedResponse: TransactionResponseDTO = {
+        ...transactionDTO,
+        price: 30000,
+        currencyId: 1,
+        type: TransactionType.SELL,
+      };
 
       mockedTransactionService.sell.mockResolvedValue(mockedResponse);
 
@@ -114,7 +130,7 @@ describe('TransactionController', () => {
       expect(response.body).toEqual({
         success: true,
         data: mockedResponse,
-        statusCode: 200
+        statusCode: 200,
       });
     });
 
@@ -122,7 +138,9 @@ describe('TransactionController', () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
       const errorMessage = 'Insufficient balance';
 
-      mockedTransactionService.sell.mockRejectedValue(new BadRequestException(errorMessage));
+      mockedTransactionService.sell.mockRejectedValue(
+        new BadRequestException(errorMessage),
+      );
 
       const response = await request(app)
         .post('/api/sell')
@@ -134,7 +152,7 @@ describe('TransactionController', () => {
         data: {
           message: errorMessage,
         },
-        statusCode: 400
+        statusCode: 400,
       });
     });
 
@@ -142,7 +160,9 @@ describe('TransactionController', () => {
       const transactionDTO = { amount: 0.001, currency: 'btc' };
       const errorMessage = 'Internal error';
 
-      mockedTransactionService.sell.mockRejectedValue(new InternalErrorException(errorMessage));
+      mockedTransactionService.sell.mockRejectedValue(
+        new InternalErrorException(errorMessage),
+      );
 
       const response = await request(app)
         .post('/api/sell')
@@ -154,7 +174,7 @@ describe('TransactionController', () => {
         data: {
           message: errorMessage,
         },
-        statusCode: 500
+        statusCode: 500,
       });
     });
   });

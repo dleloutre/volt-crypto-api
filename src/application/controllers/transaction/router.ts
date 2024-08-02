@@ -1,8 +1,9 @@
+import { TransactionRequestDTO } from '@application/DTOs/TransactionRequestDTO';
+import { validateRequest } from '@application/middlewares/requestValidator';
 import { Router } from 'express';
 import { Container } from 'typedi';
-import { validateRequest } from '@application/middlewares/requestValidator';
+
 import { TransactionController } from './TransactionController';
-import { TransactionRequestDTO } from '@application/DTOs/TransactionRequestDTO';
 
 export function TransactionRouter() {
   const router = Router();

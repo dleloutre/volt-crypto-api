@@ -1,12 +1,26 @@
 import 'reflect-metadata';
-import { Container } from 'typedi';
-import { CurrencyRepository, TransactionRepository, WalletRepository } from '@repositories';
-import { CoindeskService, WalletService, CurrencyService, TransactionService } from '@application/services';
-import { BadRequestException, InternalErrorException, NotFoundException } from '@shared/exceptions';
-import { CurrencyName, TransactionType, Transaction } from '@domain';
+
 import { TransactionRequestDTO } from '@application/DTOs';
-import { anything } from 'ts-mockito';
+import {
+  CoindeskService,
+  CurrencyService,
+  TransactionService,
+  WalletService,
+} from '@application/services';
 import { config } from '@config';
+import { CurrencyName, Transaction, TransactionType } from '@domain';
+import {
+  CurrencyRepository,
+  TransactionRepository,
+  WalletRepository,
+} from '@repositories';
+import {
+  BadRequestException,
+  InternalErrorException,
+  NotFoundException,
+} from '@shared/exceptions';
+import { anything } from 'ts-mockito';
+import { Container } from 'typedi';
 
 jest.mock('@config', () => ({
   config: {
@@ -26,17 +40,26 @@ jest.mock('@application/services/CoinDesk/CoindeskService');
 jest.mock('@application/services/WalletService');
 jest.mock('@application/services/CurrencyService');
 jest.mock('@db/SequelizeClient', () => ({
-  transaction: jest.fn().mockImplementation(callback => {
+  transaction: jest.fn().mockImplementation((callback) => {
     return callback(jest.fn());
   }),
 }));
 
-const mockedTransactionRepository = new TransactionRepository() as jest.Mocked<TransactionRepository>;
-const mockedCoindeskService = new CoindeskService() as jest.Mocked<CoindeskService>;
-const mockedCurrencyRepository = new CurrencyRepository() as jest.Mocked<CurrencyRepository>;
-const mockedCurrencyService = new CurrencyService(mockedCurrencyRepository) as jest.Mocked<CurrencyService>;
-const mockedWalletRepository = new WalletRepository() as jest.Mocked<WalletRepository>;
-const mockedWalletService = new WalletService(mockedWalletRepository, mockedCurrencyService) as jest.Mocked<WalletService>;
+const mockedTransactionRepository =
+  new TransactionRepository() as jest.Mocked<TransactionRepository>;
+const mockedCoindeskService =
+  new CoindeskService() as jest.Mocked<CoindeskService>;
+const mockedCurrencyRepository =
+  new CurrencyRepository() as jest.Mocked<CurrencyRepository>;
+const mockedCurrencyService = new CurrencyService(
+  mockedCurrencyRepository,
+) as jest.Mocked<CurrencyService>;
+const mockedWalletRepository =
+  new WalletRepository() as jest.Mocked<WalletRepository>;
+const mockedWalletService = new WalletService(
+  mockedWalletRepository,
+  mockedCurrencyService,
+) as jest.Mocked<WalletService>;
 
 describe('TransactionService', () => {
   let transactionService: TransactionService;
@@ -63,11 +86,13 @@ describe('TransactionService', () => {
     const cryptoWallet = { balance: 1, currency_id: 2, id: 2 };
 
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
-    mockedWalletService.getWalletByCurrencyName.mockImplementation((name: string) => {
-      if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
-      if (name === 'btc') return Promise.resolve(cryptoWallet);
-      return Promise.resolve(null);
-    });
+    mockedWalletService.getWalletByCurrencyName.mockImplementation(
+      (name: string) => {
+        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
+        if (name === 'btc') return Promise.resolve(cryptoWallet);
+        return Promise.resolve(null);
+      },
+    );
     mockedTransactionRepository.create.mockResolvedValue(anything());
     mockedWalletService.updateWalletsBalance.mockResolvedValue(anything());
 
@@ -80,7 +105,9 @@ describe('TransactionService', () => {
       type: TransactionType.BUY,
     });
     expect(mockedCoindeskService.getBitcoinPrice).toHaveBeenCalledTimes(1);
-    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(2);
+    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(
+      2,
+    );
     expect(mockedTransactionRepository.create).toHaveBeenCalledTimes(1);
     expect(mockedWalletService.updateWalletsBalance).toHaveBeenCalledTimes(1);
   });
@@ -94,9 +121,13 @@ describe('TransactionService', () => {
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(30000);
     mockedWalletService.getWalletByCurrencyName.mockResolvedValue(null);
 
-    await expect(transactionService.buy(transactionDTO)).rejects.toThrow(NotFoundException);
+    await expect(transactionService.buy(transactionDTO)).rejects.toThrow(
+      NotFoundException,
+    );
     expect(mockedCoindeskService.getBitcoinPrice).toHaveBeenCalledTimes(1);
-    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(2);
+    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(
+      2,
+    );
   });
 
   it('should throw BadRequestException for insufficient USD balance during buy', async () => {
@@ -109,15 +140,21 @@ describe('TransactionService', () => {
     const cryptoWallet = { balance: 1, currency_id: 2, id: 2 };
 
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
-    mockedWalletService.getWalletByCurrencyName.mockImplementation((name: string) => {
-      if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
-      if (name === 'btc') return Promise.resolve(cryptoWallet);
-      return Promise.resolve(null);
-    });
+    mockedWalletService.getWalletByCurrencyName.mockImplementation(
+      (name: string) => {
+        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
+        if (name === 'btc') return Promise.resolve(cryptoWallet);
+        return Promise.resolve(null);
+      },
+    );
 
-    await expect(transactionService.buy(transactionDTO)).rejects.toThrow(BadRequestException);
+    await expect(transactionService.buy(transactionDTO)).rejects.toThrow(
+      BadRequestException,
+    );
     expect(mockedCoindeskService.getBitcoinPrice).toHaveBeenCalledTimes(1);
-    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(2);
+    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(
+      2,
+    );
   });
 
   it('should throw BadRequestException for insufficient crypto balance during sell', async () => {
@@ -130,15 +167,21 @@ describe('TransactionService', () => {
     const cryptoWallet = { balance: 0, currency_id: 2, id: 2 };
 
     mockedCoindeskService.getBitcoinPrice.mockResolvedValue(cryptoPrice);
-    mockedWalletService.getWalletByCurrencyName.mockImplementation((name: string) => {
-      if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
-      if (name === 'btc') return Promise.resolve(cryptoWallet);
-      return Promise.resolve(null);
-    });
+    mockedWalletService.getWalletByCurrencyName.mockImplementation(
+      (name: string) => {
+        if (name === CurrencyName.USD) return Promise.resolve(usdWallet);
+        if (name === 'btc') return Promise.resolve(cryptoWallet);
+        return Promise.resolve(null);
+      },
+    );
 
-    await expect(transactionService.sell(transactionDTO)).rejects.toThrow(BadRequestException);
+    await expect(transactionService.sell(transactionDTO)).rejects.toThrow(
+      BadRequestException,
+    );
     expect(mockedCoindeskService.getBitcoinPrice).toHaveBeenCalledTimes(1);
-    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(2);
+    expect(mockedWalletService.getWalletByCurrencyName).toHaveBeenCalledTimes(
+      2,
+    );
   });
 
   it('should return investments successfully', async () => {
@@ -146,19 +189,29 @@ describe('TransactionService', () => {
     const totalInvested = 50000;
 
     mockedCurrencyService.getByName.mockResolvedValue(currency);
-    mockedTransactionRepository.findTotalInvested.mockResolvedValue(totalInvested as any);
+    mockedTransactionRepository.findTotalInvested.mockResolvedValue(
+      totalInvested as any,
+    );
 
     const result = await transactionService.getInvestments();
 
     expect(result).toBe(totalInvested);
-    expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(CurrencyName.BTC);
-    expect(mockedTransactionRepository.findTotalInvested).toHaveBeenCalledWith(currency.id);
+    expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(
+      CurrencyName.BTC,
+    );
+    expect(mockedTransactionRepository.findTotalInvested).toHaveBeenCalledWith(
+      currency.id,
+    );
   });
 
   it('should throw InternalErrorException when currency ID is not found', async () => {
     mockedCurrencyService.getByName.mockResolvedValue(null);
 
-    await expect(transactionService.getInvestments()).rejects.toThrow(InternalErrorException);
-    expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(CurrencyName.BTC);
+    await expect(transactionService.getInvestments()).rejects.toThrow(
+      InternalErrorException,
+    );
+    expect(mockedCurrencyService.getByName).toHaveBeenCalledWith(
+      CurrencyName.BTC,
+    );
   });
 });

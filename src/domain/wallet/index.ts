@@ -1,2 +1,2 @@
-export * from "./Wallet";
-export * from "./IWalletRepository";
+export * from './IWalletRepository';
+export * from './Wallet';

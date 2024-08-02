@@ -4,7 +4,7 @@ export enum CurrencyName {
 }
 
 export enum CurrencyCryptoName {
-  BTC = 'btc'
+  BTC = 'btc',
 }
 
 export function getCurrencyValues(): CurrencyName[] {

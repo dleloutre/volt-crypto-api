@@ -6,13 +6,12 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 export class Currency extends Model {
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
     primaryKey: true,
   })
   id!: number;
 
   @Column({
-    type: DataType.ENUM("btc","usd"),
+    type: DataType.ENUM('btc', 'usd'),
     allowNull: false,
     unique: true,
   })
