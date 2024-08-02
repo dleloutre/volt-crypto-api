@@ -2,6 +2,10 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   moduleDirectories: ['node_modules', 'src'],
+  testPathIgnorePatterns: [
+    "/dist/",
+    "/target/"
+  ],
   moduleNameMapper: {
     '@config': '<rootDir>/src/config/$1',
     '@domain/currency': '<rootDir>/src/domain/currency/$1',

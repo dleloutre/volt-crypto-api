@@ -6,6 +6,7 @@ import { BadRequestException, InternalErrorException } from '@shared';
 import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import request from 'supertest';
+import { config } from '@config';
 
 jest.mock('@config', () => ({
   config: {

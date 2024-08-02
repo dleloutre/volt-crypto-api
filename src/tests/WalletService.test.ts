@@ -6,6 +6,7 @@ import { TRANSACTION_BUY } from '@domain/transaction';
 import { Wallet } from '@domain/wallet';
 import { CurrencyRepository, WalletRepository } from '@repositories';
 import { Container } from 'typedi';
+import { config } from '@config';
 
 jest.mock('@config', () => ({
   config: {

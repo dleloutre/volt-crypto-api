@@ -12,6 +12,10 @@ services:
     depends_on:
       - db
     restart: on-failure
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=test
   db:
     container_name: volt-crypto-db
     image: postgres

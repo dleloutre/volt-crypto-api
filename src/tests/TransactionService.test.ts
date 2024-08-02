@@ -22,6 +22,7 @@ import {
 } from '@shared/exceptions';
 import { anything } from 'ts-mockito';
 import { Container } from 'typedi';
+import { config } from '@config';
 
 jest.mock('@config', () => ({
   config: {
