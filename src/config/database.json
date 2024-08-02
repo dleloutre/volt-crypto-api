@@ -7,9 +7,11 @@
     "dialect": "postgres"
   },
   "test": {
-    "database": "database_test",
-    "storage": ":memory:",
-    "dialect": "sqlite"
+    "username": "user",
+    "password": "admin",
+    "database": "vcrypto",
+    "host": "db",
+    "dialect": "postgres"
   },
   "production": {
     "username": "root",
