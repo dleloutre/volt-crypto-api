@@ -1,5 +1,3 @@
-//import 'reflect-metadata';
-
 import { TransactionRequestDTO } from '@application/DTOs';
 import {
   CoindeskService,

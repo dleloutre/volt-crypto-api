@@ -1,6 +1,8 @@
-// import 'reflect-metadata';
-
-import { CurrencyService, TransactionService, WalletService } from '@application/services';
+import {
+  CurrencyService,
+  TransactionService,
+  WalletService,
+} from '@application/services';
 import { config } from '@config';
 import { Currency } from '@domain/currency';
 import { TRANSACTION_BUY } from '@domain/transaction';
@@ -43,7 +45,7 @@ describe('Wallet Service', () => {
 
     walletService = new WalletService(
       Container.get('WalletRepositoryW'),
-      Container.get('CurrencyServiceW')
+      Container.get('CurrencyServiceW'),
     );
   });
 

@@ -12,12 +12,12 @@ import {
   TRANSACTION_BUY,
   TRANSACTION_SELL,
 } from '@domain/transaction';
+import { TransactionRepository } from '@repositories';
 import {
   BadRequestException,
   InternalErrorException,
   NotFoundException,
 } from '@shared';
-import { TransactionRepository } from '@repositories';
 import { Service } from 'typedi';
 
 @Service()
@@ -27,12 +27,7 @@ export class TransactionService {
     public coindeskService: CoindeskService,
     public walletService: WalletService,
     public currencyService: CurrencyService,
-  ) {
-    console.log(this.transactionRepository)
-    console.log(this.coindeskService)
-    console.log(this.walletService)
-    console.log(this.currencyService)
-  }
+  ) {}
 
   public async buy(transactionDTO: TransactionRequestDTO) {
     return await this.performTransaction(transactionDTO, TRANSACTION_BUY);

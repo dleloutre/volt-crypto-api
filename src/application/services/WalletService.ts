@@ -10,9 +10,7 @@ export class WalletService {
   constructor(
     public walletRepository: WalletRepository,
     public currencyService: CurrencyService,
-  ) {
-    console.log("Me invocan")
-  }
+  ) {}
 
   public async getWalletByCurrencyName(
     currencyName: string,
